@@ -32,3 +32,10 @@ npx playwright codegen demo.playwright.dev/todomvc
 ## Generate locator
 - Click vào nút "Record" để dừng recording lại. Nút "Pick locator" sẽ xuất hiện.
 - Click vào nút "Pick locator", sau đó hover qua các phần tử bạn muốn lấy locator. Lúc này phần tử sẽ sáng lên
+- Khi click vào element thì ở tab Locator trên Playground sẽ có locator xuất hiện.
+- Bạn có thể sửa locator cho phù hợp rồi copy vào test.
+
+## Emulation (giả lập)
+- Bạn có thể gen test sử dụng giả lập kích thước viewport, thiết bị, color scheme cũng như các vị trí, ngôn ngữ và timezone.
+- Test generator cũng có thể lưu lại trạng thái đăng nhập.
+- Xem thêm tại [Test Generator](https://playwright.dev/docs/codegen#emulation)
