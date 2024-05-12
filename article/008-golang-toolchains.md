@@ -40,4 +40,8 @@ GOTOOLCHAIN=go1.21rc3 go test
 
 # Module và workspace configuration
 - Go module và workspace định nghĩa tên phiên bản trong file go.mod và go.work.
-- Go line 
+- Dòng go định nghĩa phiên bản thấp nhất cho Go version sử dụng trong module hay workspace.
+- Để tương thích tốt, nếu dòng go bị lược bỏ trong file go.mod thì go sẽ ở version 1.16, và dòng go bị lược bỏ trong file go.work thì go sẽ ở version 1.18 (kiểu version thấp nhất mà go.mod hay go.work support).
+- Dòng toolchain khai báo một phiên bản khuyên dùng cho module hay workspace. 
+- Nếu không có dòng toolchain thì go sẽ chạy phiên bản go định nghĩa ở dòng `go`.
+- 
