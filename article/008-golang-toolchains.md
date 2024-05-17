@@ -40,4 +40,4 @@ GOTOOLCHAIN=go1.21rc3 go test
 
 # Module và workspace configuration
 - Go module và workspace định nghĩa tên phiên bản trong file go.mod và go.work.
-- Go line 
+- Dòng `go` 
