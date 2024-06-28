@@ -53,9 +53,9 @@ doc = Document(text="text")
 ## Transformations
 - Sau khi dữ liệu được load, bạn cần xử lý và transform nó trước khi lưu vào storage.
 - Quá trình transform này bao gồm:
-  - chunking
-  - extract metadata
-  - embedding từng chunk.
+  - Chunking: chặt nhỏ ra thành các node
+  - Extract metadata: gắn nội dung cho node: parent, sibling, summary nội dung node, đặt title cho node,...
+  - Embedding từng chunk:
 - Quá trình này rất quan trọng để make sure dữ liệu có thể được lấy ra và sử dụng một cách tối ưu nhất bởi LLM.
 - Transformation input/output là các Node (Document là subclass của Node).
 - Các transformation có thể được xếp lên nhau và sắp xếp theo thứ tự.
@@ -125,6 +125,7 @@ index = VectorStoreIndex([node1, node2])
 
 # Llama Hub
 - Data connector ở Llama hub nhiều vl.
+![Llama hub](images/llamahub.png)
 
 ## Cách dùng
 
@@ -141,4 +142,8 @@ documents = loader.load_data(document_ids=[...])
   - Google Docs
   - Slack
   - Discord
-  - Apify Actors
+  - Apify Actorszo
+
+# Next
+- https://docs.llamaindex.ai/en/stable/understanding/indexing/indexing/
+- https://docs.llamaindex.ai/en/stable/understanding/storing/storing/
