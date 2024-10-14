@@ -1,0 +1,16 @@
+# Appium in a Nutshell
+- Appium hướng tới việc support UI automation cho many platforms (mobile, web, desktop,...). Support code nhiều ngôn ngữ luôn.
+- Nếu mà đưa cả đống này vào cùng một chỗ thì hơi loạn => chia nhỏ ra cho dễ làm:
+    - **Appium core**: chứa core APIs
+    - **Drivers**: chứa connect tới một platform nhất định
+    - **Clients**: Implements Appium API theo một ngôn ngữ nhất định.
+    - **Plugins**: Kế thừa hoặc mở rộng core function
+- Vì thế mà để chạy auto trên Appium thì bạn cần:
+    - Cài Appium
+    - Cài driver để connect tới Platform mà bạn định test.
+    - Cài một client library cho ngôn ngữ lập trình mà bạn định dùng.
+    - Cài các plugins cần thiết.
+- Next step thì có thể tìm hiểu thêm về Appium:
+    - [Core](https://appium.io/docs/en/latest/intro/appium/)
+    - [Drivers](https://appium.io/docs/en/latest/intro/drivers/)
+    - [Clients](https://appium.io/docs/en/latest/intro/clients/)
