@@ -135,4 +135,5 @@ Trong quá trình nhiều người dùng cùng truy cập vào ArgoCD, **argocd-
 - 5. Bảo mật thông tin nhạy cảm với Sealed Secrets hoặc Helm Secrets
 - 6. Giám sát và cảnh báo qua Notifications Controller
 
-## Xây dựng O24-liked environment
+# What's next:
+- Xây dựng O24-liked environment
