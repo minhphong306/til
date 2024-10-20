@@ -23,5 +23,33 @@ kubectl config set-context --current --namespace=argocd
     - Redis password được lưu ở Kubenetes secret `argocd-redis` với key `auth`, ở namespace `argocd`
 
 # 2. Cài ArgoCD CLI
+- brew install argocd
+- https://github.com/argoproj/argo-cd/releases/latest
+
 # 3. Truy cập Argo CD API server
-- Mặc định thì Argo CD API server không expose
+- Mặc định thì Argo CD API server không expose với một external IP.
+- Để access được API Server, cần dùng 1 trong 2 cách sau:
+- Đổi service type về LoadBalancer
+```
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+```
+- Sử dụng Ingress: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/
+- Port Forwarding: 
+```
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
+    - Lúc này có thể access sử dụng port 8080: https://localhost:8080
+
+# 4. - Login sử dụng CLI
+- Account mặc định là admin.
+- Password thì lưu trong secret. Dùng argocli để lấy cũng được
+```
+argocd admin initial-password -n argocd
+```
+- Lưu ý: sau khi dùng xong thì xoá hẳn cái argocd-initial-admin-secret đi nha. Cũng không dùng để làm gì đâu.
+    - Sau này cần gen lại thì argocd sẽ tự tạo cái secret khác.
+
+- Sử dụng username admin và password để login:
+```bash
+argocd login <ARGOCD_SERVER>
+```
