@@ -71,4 +71,5 @@ k delete -f <file_name>
 
 ## Pod templates
 - Controller cho workload resource tạo pod từ pod template và quản lý các pod đó thay cho bạn.
-- PodTemplate là specification để tạo pods, 
+- PodTemplate là specification để tạo pods, bao gồm có Deployment, Jobs, DaemonSets.
+- Mỗi controller
