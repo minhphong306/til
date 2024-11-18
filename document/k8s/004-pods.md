@@ -71,5 +71,26 @@ k delete -f <file_name>
 
 ## Pod templates
 - Controller cho workload resource tạo pod từ pod template và quản lý các pod đó thay cho bạn.
-- PodTemplate là specification để tạo pods, bao gồm có Deployment, Jobs, DaemonSets.
-- Mỗi controller
+- PodTemplate là specification để tạo pods, được nằm trong các workload resource như Deployments, Jobs hay DaemonSets.
+- Controller sử dụng PodTemplate trong mỗi workload object để tạo ra pod cụ thể.
+- Khi tạo pod, bạn có thể thêm vào environment variable trong pod template để container chạy trong pod đọc được.
+- Ví dụ dưới đây là file manifest cho một Job đơn giản với một template, khởi động một container. Container này sẽ in ra một message, sau đó dừng lại.
+
+```yml
+apiVersion: batch/v1
+kind: Job
+metadata:
+    name: hello
+spec:
+    template:
+        # This is the pod template
+        spec:
+            containers:
+            - name: hello
+              image: busybox:1.28
+              command: ['sh', '-c', 'echo "Hello, K8s!" && sleep 10000']
+            restartPolicy: OnFailure
+        # The pod template ends here
+```
+- Việc thay đổi pod template không làm ảnh hưởng tới pod đã tồn tại. Muốn thay đổi được cập nhật thì sẽ tạo pod mới, thay cho pod cũ.
+- Trên mỗi nodes, kubelet không trực tiếp kiểm soát và quản lý chi tiết của các pod templates. Những thông tin này cũng được abstract
