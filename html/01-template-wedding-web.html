@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(45deg, #ffb6c1, #ffc0cb);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1500px;
+            z-index: 1;
+        }
+
+        .cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff69b4, #ffc0cb);
+            transform-origin: left;
+            transition: transform 1s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover .cover {
+            transform: rotateY(-120deg);
+        }
+
+        .inside {
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #fff1eb, #fff);
+        }
+
+        .hearts {
+            font-size: 40px;
+            color: #ff69b4;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .names {
+            font-size: 24px;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .date {
+            font-size: 18px;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .cover-text {
+            font-size: 24px;
+            color: white;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .dove {
+            position: absolute;
+            width: 120px;
+            /* Tăng kích thước từ 50px lên 120px */
+            height: 120px;
+            /* Tăng kích thước từ 50px lên 120px */
+            fill: white;
+            filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.3));
+            animation: fly 20s linear infinite;
+            /* Tăng thời gian bay để chim di chuyển chậm hơn */
+        }
+
+        .dove2 {
+            animation-delay: -10s;
+            top: 20%;
+            width: 100px;
+            /* Kích thước nhỏ hơn một chút so với chim thứ nhất */
+            height: 100px;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fly {
+            0% {
+                left: -20%;
+                transform: translateY(0) scale(1);
+            }
+
+            25% {
+                transform: translateY(50px) scale(1);
+            }
+
+            50% {
+                transform: translateY(0) scale(-1, 1);
+            }
+
+            75% {
+                transform: translateY(-50px) scale(-1, 1);
+            }
+
+            100% {
+                left: 120%;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .flowers {
+            position: absolute;
+            font-size: 20px;
+            color: #ff69b4;
+            animation: fallDown 10s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes fallDown {
+            0% {
+                transform: translateY(-100%) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body> <!-- Chim bồ câu 1 - Lớn hơn và chi tiết hơn --> <svg class="dove" viewBox="0 0 100 100">
+        <path
+            d="M20,40                 C20,30 30,20 40,20                 C50,20 60,30 65,35                 C70,40 75,45 80,45                 C85,45 90,40 90,35                 C90,30 85,25 80,25                 C75,25 70,30 65,35                 L60,40                 C55,45 50,50 45,50                 C40,50 35,45 30,40                 C25,35 20,35 20,40                 Z" />
+        <circle cx="35" cy="30" r="2" fill="black" /> <!-- Mắt -->
+    </svg> <!-- Chim bồ câu 2 - Nhỏ hơn một chút --> <svg class="dove dove2" viewBox="0 0 100 100">
+        <path
+            d="M20,40                 C20,30 30,20 40,20                 C50,20 60,30 65,35                 C70,40 75,45 80,45                 C85,45 90,40 90,35                 C90,30 85,25 80,25                 C75,25 70,30 65,35                 L60,40                 C55,45 50,50 45,50                 C40,50 35,45 30,40                 C25,35 20,35 20,40                 Z" />
+        <circle cx="35" cy="30" r="2" fill="black" /> <!-- Mắt -->
+    </svg>
+    <div class="card">
+        <div class="cover">
+            <div class="cover-text">
+                <div class="hearts">❤️</div> Thiệp Mời
+            </div>
+        </div>
+        <div class="inside">
+            <div class="hearts">❤️</div>
+            <div class="names"> Nga <br>& <br>Phong </div>
+            <div class="date"> Trân trọng kính mời <br> Quý vị đến dự lễ thành hôn </div>
+        </div>
+    </div>
+    <script>        function createFlower() { const flower = document.createElement('div'); flower.className = 'flowers'; flower.style.left = Math.random() * 100 + 'vw'; flower.innerHTML = '🌸'; document.body.appendChild(flower); setTimeout(() => { flower.remove(); }, 10000); } setInterval(createFlower, 300);    </script>
+</body>
+
+</html>
