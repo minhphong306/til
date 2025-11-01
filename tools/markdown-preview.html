@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Preview</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .header {
+            background-color: #f5f5f5;
+            padding: 12px 16px;
+            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background-color: #0366d6;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: #0256c7;
+        }
+
+        .copy-btn:active {
+            background-color: #024ea1;
+        }
+
+        .copy-btn.copied {
+            background-color: #28a745;
+        }
+
+        .char-count {
+            font-size: 11px;
+            color: #666;
+            font-weight: normal;
+            margin-left: 8px;
+        }
+
+        .editor-column {
+            border-right: 1px solid #ddd;
+        }
+
+        #editor {
+            flex: 1;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 14px;
+            border: none;
+            outline: none;
+            resize: none;
+            line-height: 1.6;
+        }
+
+        #preview {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            background-color: #fff;
+        }
+
+        #plainText {
+            flex: 1;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 14px;
+            border: none;
+            outline: none;
+            resize: none;
+            line-height: 1.6;
+            overflow-y: auto;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        /* Markdown styling */
+        #preview h1 {
+            font-size: 2em;
+            margin: 0.67em 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.3em;
+        }
+
+        #preview h2 {
+            font-size: 1.5em;
+            margin: 0.75em 0 0.5em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.3em;
+        }
+
+        #preview h3 {
+            font-size: 1.25em;
+            margin: 0.75em 0 0.5em;
+        }
+
+        #preview h4, #preview h5, #preview h6 {
+            margin: 0.75em 0 0.5em;
+        }
+
+        #preview p {
+            margin: 0.5em 0;
+            line-height: 1.6;
+        }
+
+        #preview code {
+            background-color: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.9em;
+        }
+
+        #preview pre {
+            background-color: #f6f8fa;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1em 0;
+        }
+
+        #preview pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        #preview blockquote {
+            border-left: 4px solid #ddd;
+            padding-left: 16px;
+            margin: 1em 0;
+            color: #666;
+        }
+
+        #preview ul, #preview ol {
+            margin: 0.5em 0;
+            padding-left: 2em;
+        }
+
+        #preview li {
+            margin: 0.25em 0;
+        }
+
+        #preview table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+        }
+
+        #preview table th,
+        #preview table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        #preview table th {
+            background-color: #f6f8fa;
+            font-weight: 600;
+        }
+
+        #preview a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        #preview a:hover {
+            text-decoration: underline;
+        }
+
+        #preview img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        #preview hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 1.5em 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="column editor-column">
+            <div class="header">
+                <span>
+                    Markdown Input
+                    <span id="editorCount" class="char-count">0 chars</span>
+                </span>
+                <button id="copyEditorBtn" class="copy-btn">Copy</button>
+            </div>
+            <textarea id="editor" placeholder="Type your markdown here..."># Welcome to Markdown Preview
+
+## Features
+
+- **Live preview** as you type
+- Support for all standard markdown syntax
+- Clean two-column layout
+
+### Code Example
+
+```javascript
+function hello() {
+    console.log("Hello, World!");
+}
+```
+
+### Lists
+
+1. First item
+2. Second item
+3. Third item
+
+- Bullet point
+- Another point
+
+### Quote
+
+> This is a blockquote
+> It can span multiple lines
+
+### Table
+
+| Feature | Status |
+|---------|--------|
+| Preview | ✓ |
+| Syntax | ✓ |
+
+[Learn more about Markdown](https://www.markdownguide.org/)
+</textarea>
+        </div>
+        <div class="column">
+            <div class="header">
+                <span>
+                    Preview
+                    <span id="previewCount" class="char-count">0 chars</span>
+                </span>
+                <div>
+                    <button id="copyPreviewBtn" class="copy-btn">Copy</button>
+                    <button id="copyHtmlBtn" class="copy-btn">Copy formatted HTML</button>
+                </div>
+            </div>
+            <div id="preview"></div>
+        </div>
+        <div class="column">
+            <div class="header">
+                <span>
+                    Plain Text
+                    <span id="plainTextCount" class="char-count">0 chars</span>
+                </span>
+                <button id="copyBtn" class="copy-btn">Copy</button>
+            </div>
+            <textarea id="plainText" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const preview = document.getElementById('preview');
+        const plainText = document.getElementById('plainText');
+        const copyEditorBtn = document.getElementById('copyEditorBtn');
+        const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+        const copyPreviewBtn = document.getElementById('copyPreviewBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const editorCount = document.getElementById('editorCount');
+        const previewCount = document.getElementById('previewCount');
+        const plainTextCount = document.getElementById('plainTextCount');
+        let transformedMarkdown = '';
+        let plainTextContent = '';
+
+        // Configure marked options
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            headerIds: true,
+            mangle: false
+        });
+
+        function stripMarkdown(markdown) {
+            let text = markdown;
+
+            // Remove code blocks first (preserve content)
+            text = text.replace(/```[\s\S]*?```/g, (match) => {
+                return match.replace(/```\w*\n?/g, '').replace(/```/g, '');
+            });
+
+            // Remove inline code
+            text = text.replace(/`([^`]+)`/g, '$1');
+
+            // Remove bold/italic
+            text = text.replace(/\*\*\*(.+?)\*\*\*/g, '$1');
+            text = text.replace(/\*\*(.+?)\*\*/g, '$1');
+            text = text.replace(/\*(.+?)\*/g, '$1');
+            text = text.replace(/___(.+?)___/g, '$1');
+            text = text.replace(/__(.+?)__/g, '$1');
+            text = text.replace(/_(.+?)_/g, '$1');
+
+            // Remove headers
+            text = text.replace(/^#{1,6}\s+(.+)$/gm, '$1');
+
+            // Remove links but keep text
+            text = text.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
+
+            // Remove images
+            text = text.replace(/!\[([^\]]*)\]\([^\)]+\)/g, '$1');
+
+            // Remove blockquotes
+            text = text.replace(/^>\s+/gm, '');
+
+            // Remove horizontal rules
+            text = text.replace(/^[-*_]{3,}$/gm, '');
+
+            // Remove list markers
+            text = text.replace(/^\s*[-*+]\s+/gm, '');
+            text = text.replace(/^\s*\d+\.\s+/gm, '');
+
+            // Remove extra blank lines and trim
+            text = text.replace(/\n{3,}/g, '\n\n');
+            text = text.trim();
+
+            return text;
+        }
+
+        function updatePreview() {
+            let markdown = editor.value;
+
+            // Update editor character count
+            editorCount.textContent = `${editor.value.length} chars`;
+
+            // Transform "Link gốc" lines (with or without bold formatting)
+            markdown = markdown.replace(/^(\*\*)?Link gốc(\*\*)?.*$/gm, '**Link gốc**: Automation Testing Forum - topic daily testing');
+
+            // Add hashtags at the end if not already present
+            if (!markdown.includes('#playwrightvn')) {
+                markdown = markdown.trim() + '\n\n_-_-_-_-\n\n#playwrightvn #playwrightvn_sharing';
+            }
+
+            transformedMarkdown = markdown;
+            preview.innerHTML = marked.parse(markdown);
+
+            // Update preview character count (transformed markdown)
+            previewCount.textContent = `${transformedMarkdown.length} chars`;
+
+            // Update plain text column - convert newlines to literal \n
+            plainTextContent = stripMarkdown(markdown);
+            plainText.value = plainTextContent.replace(/\n/g, '\\n');
+
+            // Update plain text character count
+            plainTextCount.textContent = `${plainTextContent.length} chars`;
+        }
+
+        // Copy editor content (original markdown)
+        copyEditorBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(editor.value);
+
+                copyEditorBtn.textContent = 'Copied!';
+                copyEditorBtn.classList.add('copied');
+
+                setTimeout(() => {
+                    copyEditorBtn.textContent = 'Copy';
+                    copyEditorBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                copyEditorBtn.textContent = 'Failed';
+                setTimeout(() => {
+                    copyEditorBtn.textContent = 'Copy';
+                }, 2000);
+            }
+        });
+
+        // Copy formatted HTML
+        copyHtmlBtn.addEventListener('click', async () => {
+            try {
+                const htmlContent = preview.innerHTML;
+
+                // Create a blob with HTML content
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const plainTextBlob = new Blob([transformedMarkdown], { type: 'text/plain' });
+
+                // Use ClipboardItem to copy both HTML and plain text
+                const clipboardItem = new ClipboardItem({
+                    'text/html': blob,
+                    'text/plain': plainTextBlob
+                });
+
+                await navigator.clipboard.write([clipboardItem]);
+
+                copyHtmlBtn.textContent = 'Copied!';
+                copyHtmlBtn.classList.add('copied');
+
+                setTimeout(() => {
+                    copyHtmlBtn.textContent = 'Copy formatted HTML';
+                    copyHtmlBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                copyHtmlBtn.textContent = 'Failed';
+                setTimeout(() => {
+                    copyHtmlBtn.textContent = 'Copy formatted HTML';
+                }, 2000);
+            }
+        });
+
+        // Copy preview content (transformed markdown)
+        copyPreviewBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(transformedMarkdown);
+
+                copyPreviewBtn.textContent = 'Copied!';
+                copyPreviewBtn.classList.add('copied');
+
+                setTimeout(() => {
+                    copyPreviewBtn.textContent = 'Copy';
+                    copyPreviewBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                copyPreviewBtn.textContent = 'Failed';
+                setTimeout(() => {
+                    copyPreviewBtn.textContent = 'Copy';
+                }, 2000);
+            }
+        });
+
+        // Copy plain text content
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(plainTextContent);
+
+                copyBtn.textContent = 'Copied!';
+                copyBtn.classList.add('copied');
+
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                copyBtn.textContent = 'Failed';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy';
+                }, 2000);
+            }
+        });
+
+        // Update preview on input
+        editor.addEventListener('input', updatePreview);
+
+        // Initial render
+        updatePreview();
+    </script>
+</body>
+</html>
