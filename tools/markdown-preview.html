@@ -387,14 +387,17 @@ function hello() {
                 markdown = markdown.trim() + '\n\n_-_-_-_-\n\n#playwrightvn #playwrightvn_sharing';
             }
 
+            // For yay text, use different hashtags
+            let yayMarkdown = markdown.replace('#playwrightvn #playwrightvn_sharing', '#vnpython #vnpython_sharing');
+
             transformedMarkdown = markdown;
             preview.innerHTML = marked.parse(markdown);
 
             // Update preview character count (transformed markdown)
             previewCount.textContent = `${transformedMarkdown.length} chars`;
 
-            // Update yay text column - convert to Unicode bold
-            yayTextContent = convertToYayText(markdown);
+            // Update yay text column - convert to Unicode bold (with vnpython hashtags)
+            yayTextContent = convertToYayText(yayMarkdown);
             yayText.value = yayTextContent;
 
             // Update yay text character count
