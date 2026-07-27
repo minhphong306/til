@@ -1,3 +1,34 @@
+# Preface
+- Từ docs của Python 3.10: “Python is an easy to learn, powerful programming language.”
+    - Python dễ học -> nhiều practical user chỉ dùng 1 số tính năng, bỏ qua nhiều tính năng hay của Python.
+- Một lập trình viên có kinh nghiệm có thể chỉ cần vài giờ để làm quen với Python. Có xu hướng mang phong cách code python giống code mà trước đây đã làm.
+- Có một vấn đề: chúng ta thường chỉ học cái gì chúng ta biết. Ví dụ: mình đã biết về regex. Do vậy mình thường vào trong docs của Python tìm về Regex để đọc.
+    - Nhưng unpacking tuple thì mình chưa biết tới bao giờ -> thậm chí còn không bao giờ search về nó -> không biết -> không dùng.
+- Trọng tâm cuốn sách: học về những thứ độc đáo của ngôn ngữ Python.
+- Cuốn sách dành cho: những người muốn thành thạo Python.
+- Cuốn sách không dành cho: những người mới học Python.
+- 5 cuốn sách trong 1:
+    - Chap 1: ai cũng nên đọc
+    - Phần 1 -> 4 là các cuốn sách nhỏ, lồng trong cuốn sách lớn.
+    - Chap 2 sẽ focus vào những thứ có sẵn (built-in) trước khi tự xây dựng lại.
+    - Tự xây dựng user-defined sequences thì phần 3 mới học. Học cách tận dụng collections.abc thế nào.
+    - Cách này có vài ưu điểm:
+        - Hiểu rõ cái gì có sẵn -> giảm phát minh cái bánh xe
+        - Chúng ta thường sử dụng các collection có sẵn với tần suất nhiều hơn là tự viết
+- Cuốn sách này được cấu trúc thế nào?
+    - PHần 1: Data structure
+        - Chap 1: Giới thiệu về Python Data Model, giải thích tại sao các special methods (VD: __repr__) là chìa khóa dẫn đến sự consistence.
+            - Ngoài ra còn cover các collection types: sequences, mapping, sets.
+            - Ngoài ra còn str và bytes - niềm vui của người dùng Python 3 và nỗi buồn của người dùng Python 2.
+            - Chap này cũng cover high-level class builder của các thư viện chuẩn - named tuple factories và @dataclass decorator
+        - Pattern matching - tính năng mới của Python 3.10 cũng được cover ở chap 2, 3, 5
+        - Chap cuối của phần này cover life cycle của object: tham chiếu, khả năng thay đổi và trình dọn rác.
+    - Phần 2: Function as Object 
+        - Nói về việc function là First-class object: có nghĩa là gì? ảnh hưởng thế nào đến các design pattern phổ biến, triển khai decorator bằng việc tận dụng closure.
+        - Ngoài ra phần này nói về callable trong Python; function attribute, params, annotation và nonlocal được khai báo trong Python 3.
+        - Chap 8 nói về type hints và function signatures
+    - Phần 3: Classes và protocols
+        - 
 # Part 1: Data structures
 - Một trong những tính năng hay của Python, là tính thống nhất (consistency).
 - Khi quen với Python, bạn thậm chí có thể đoán được cả những tính năng mà bạn chưa biết đến.
