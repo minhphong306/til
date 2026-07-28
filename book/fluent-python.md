@@ -27,8 +27,32 @@
         - Nói về việc function là First-class object: có nghĩa là gì? ảnh hưởng thế nào đến các design pattern phổ biến, triển khai decorator bằng việc tận dụng closure.
         - Ngoài ra phần này nói về callable trong Python; function attribute, params, annotation và nonlocal được khai báo trong Python 3.
         - Chap 8 nói về type hints và function signatures
-    - Phần 3: Classes và protocols
-        - 
+    - Phần 3: Classes và protocols: học để xây dựng class từ đầu, sử dụng abstract base class(ABCs), xử lý đa kế thừa, operator overloading. Sau đó chap 15 lại tiếp tục về type hint.
+    - Phần 4: Control Flow
+        - Phần này nói về các cấu trúc ngôn ngữ và thư viện vượt ra ngoài flow thông thường với câu điều kiện, vòng lặp, và các chương trình con nữa.
+        - Bắt đầu với generator, context manager, corotines, sau đó là yeild from.
+        - Chương 18 gồm 1 ví dụ quan trọng với pattern matching (???) - đơn giản mà hiệu quả với trình thông dịch?
+        - Chap 19 - giới thiệu về concurrency model trong Python - nói về một cách khác cho concurrent và parallel processing trong Python; hạn chế và cách các kiến trúc phần mềm cho phép Python hoạt động ở quy mô ứng dụng web. 
+        - Tác giả viết lại chương async programming, để nhấn mạnh các feature core của ngôn ngữ: await, async dev, async for, async with và mô tả cách nó hoạt động với asyncio và các framework khác.
+    - Phần 5: Metaprogramming
+        - Phần này ôn lại kĩ thuật xây dựng class - có thể tự động tạo các thuộc tính (attribute) khi chạy chương trình. Việc này hữu ích khi xử lý dữ liệu dạng JSON.
+        - Tiếp theo, sách giải thích lại cơ chế property- một tính năng quen thuộc trong Python- rồi đi sâu hơn vào cách Python thực sự đọc và ghi thuộc tính của đối tượng tầng thấp thông qua descriptor.
+        - Bạn cũng sẽ hiểu rõ mối quan hệ của function, method và descriptor, cách chúng phối hợp với nhau bên trong Python.
+        - Xuyên suốt phần 5, chúng ta sẽ xây dựng 1 thư viện field validator. Trong quá trình đó, nhiều vấn đề tinh vi sẽ xuất hiện, dẫn dắt bạn đến hai công cụ ở chương cuối: 
+            - Class decorator - decorator áp dụng cho class,
+            - Metaclass - cơ chế cho phép tùy biến cách Python tạo ra class.
+## Hands-On approach (Phương pháp học thông qua thực hành)
+- Chúng ta sẽ sử dụng Python REPL - interactive console để thực hành.
+- Đây là một công cụ học tập cực kì mạnh mẽ.
+- Một trong những testing package phổ thông của python là doctest, hoạt động bằng cách giả lập các console session
+- Tác giả cũng dùng pytest thay vì thư viện chuẩn unittest vì nó ngon hơn.
+- Hầu hết các ví dụ có thể chạy với lệnh `python3 -m doctest example_script.py`
+
+## Soapbox
+- Đây là phần cuối mỗi chương, tác giả dùng để so sánh với các ngôn ngữ lập trình khác. 
+- Việc này là optional, nếu bạn ko thích, cứ bỏ qua.
+
+
 # Part 1: Data structures
 - Một trong những tính năng hay của Python, là tính thống nhất (consistency).
 - Khi quen với Python, bạn thậm chí có thể đoán được cả những tính năng mà bạn chưa biết đến.
