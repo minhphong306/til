@@ -52,6 +52,8 @@
 - Đây là phần cuối mỗi chương, tác giả dùng để so sánh với các ngôn ngữ lập trình khác. 
 - Việc này là optional, nếu bạn ko thích, cứ bỏ qua.
 
+## Conventions
+- Chữ nghiêng: terms, URLs, email, filename hoặc file extension
 
 # Part 1: Data structures
 - Một trong những tính năng hay của Python, là tính thống nhất (consistency).
@@ -65,19 +67,23 @@ import collections
 
 Card = collections.namedtuple('Card', ['rank', 'suite'])
 
+
 class FrenchDeck:
     ranks = [str(n) for n in range(2, 11)] + list('JQKA')
-    suites = 'spades diamonds clubs hearts'.split()
+    suits = 'spades diamonds clubs hearts'.split()
 
     def __init__(self):
-        self._cards = [Card(rank, suite) for suite in self.suites
-                                        for rank in self.ranks]
-    
+        self._cards = [
+            Card(rank, suit)
+            for rank in self.ranks
+            for suit in self.suits
+        ]
+
     def __len__(self):
         return len(self._cards)
 
-    def __getitem__(self, position):
-        return self._cards[position]
+    def __getitem__(self, key):
+        return self._cards[key]
 ```
 - Class FrenchDeck khá đầy đủ tính năng.
 - Nếu cần pick random card, không cần code thêm gì cả:
