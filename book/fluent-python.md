@@ -217,3 +217,28 @@ class Vector:
 ```
 
 #### Collection API
+- Abstract Base Classes (ABCs) thì có:
+    - Reversible
+    - Iterable
+    - Sized
+    - Container
+    - Sequence
+    - Mapping
+    - Set
+- Trong mỗi thằng sẽ có một số lượng special method, chia làm 3 nhóm:
+    - Iterable: support vòng lặp for, unpacking, hoặc các kiểu lặp
+    - Sized: hỗ trợ len built-in function
+    - Container: support in operation
+- Python ko yêu cầu các class implement các Abstract based class này tường minh.
+    - VD: Bất cứ class nào implement __len__ thì đều thỏa mãn Sized interface.
+- Chia các collection quan trọng ra thành 3 nhóm:
+    - Sequence: list, str
+    - Mapping: dict, collection.defautdict
+    - Set: set, frozenset
+- Chỉ có Sequence thì support reversed, vì nó có thứ tự
+    - Thiệt ra từ python 3.7, dict cũng support thứ tự, nhưng mà cũng ko chuẩn lắm đâu.
+- Infix operator: toán tử nằm giữa 2 toán hạng
+    - VD: `a & b`
+- Tất cả các special method trong Python là infix operator
+
+### Overview về special methods
