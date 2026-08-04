@@ -242,3 +242,117 @@ class Vector:
 - Tất cả các special method trong Python là infix operator
 
 ### Overview về special methods
+
+// TODO: fill SOAPBOX chap 1
+
+## Chap 2: An Array of Sequences
+- Trước khi tạo ra Python, Guido contribute 10 năm ở ngôn ngữ ABC
+- ABC có rất nhiều ý tưởng mà ta gọi là Pythonic: 
+    - Các thao tác dùng chung cho nhiều kiểu chuỗi (VD: len dùng đc cả list, tuple, string)
+    - Kiểu tuple có sẵn
+    - Structure bằng cách thụt đầu dòng, không dùng ngoặc nhọn
+    - Vẫn strong type mà không cần khai báo kiểu dữ liệu
+- Không phải ngẫu nhiên mà Python lại thân thiện với người dùng đến vậy
+- Python kế thừa từ ABC cách xử lý thống nhất với với các chuỗi (sequences).
+    - str, list, bytes, array; xml, kết quả truy vấn CSDL đều dùng chung các hàm iteration, slicing, sorting, concat
+- Hiểu rõ sự đa dạng của kiểu chuỗi có sẵn, giúp ta khỏi phát minh lại bánh xe. Với sau mà thiết kế cái gì thì sẽ có 1 cái tư duy tốt hơn để thiết kế những cái dùng chung.
+- CHương này nói về kiểu sequences: str, list, bytes, array, queue
+- Chương 4 nói về  Unicode, byte
+- Chương này chủ yếu nói về kiểu chuỗi có sẵn để dùng ngay.
+- Chương 12: tự tạo kiểu chuỗi của riêng bạn.
+
+- Một số topic mà chương này sẽ cover:
+    - List comprehension và basic của generator expressions
+    - Sử dụng tuples như records và tuples như immutable lists
+    - Sequences unpacking và sequences pattern
+    - Đọc và ghi vào slice
+    - Một số loại sequences đặc biệt: array, queues.
+
+### Overview of built-in sequences
+- Các loại sequences (implement từ C):
+    - Container sequences: có thể chứa items từ nhiều type, có thể chứa cả nested container: list, tuple, collections.deque
+    - Flat sequences: chứa item simple type: str, bytes, array.array
+        - Note:
+            - Container sequences thì mỗi phần tử sẽ lưu một reference tới 1 flat sequences
+- Một cách khác để phân loại: theo sự "có thể thay đổi":
+    - Mutable sequences: list, bytearray, array.array, collections.dequeue
+    - Immutable sequences: tuple, str, byte
+- Hãy nhớ đặc điểm chung: mutable & immutable; container & flat. Việc này giúp bạn suy rộng ra, từ một kiểu ra các kiểu còn lại.
+- Kiểu `list` là một kiểu nền tảng, list comprehension cũng là 1 cú pháp quan trọng.
+
+```python
+from collections import abc
+issubclass(tuple, abc.Sequence) # True
+issubclass(list, abc.MutableSequence) # False
+```
+
+### List comprehension & Generator Expression
+- list comprehension và generator expression là cách để build 1 list tiện lợi & nhanh & dễ đọc.
+    - Thường viết tắt:
+        - List comprehension = listcomps
+        - Generator expression = genexps
+
+#### Tính dễ đọc của listcomps
+- Kiểu loop thông thường:
+```python
+symbols = "Hello Viet Nam"
+codes = []
+
+for symbol in symbols:
+    codes.append(ord(symbol))
+
+print(codes)
+```
+- Kiểu loop với list comprehension
+
+```python3
+symbols = "Hello Viet Nam"
+codes = [ord(symbol) for symbol in symbols]
+```
+- Lưu ý quan trọng: KHÔNG LẠM DỤNG listcomps
+    - listcomps chỉ dùng để build list.
+    - Nếu code của bạn không build list thì đừng dùng.
+    - Vòng for trong listcomps nên đơn giản.
+
+#### Local scope với listcomps và generator expression
+- Nghĩa là thường thì biến tạm trong listcomps ra ngoài ngoặc vuông là biến mất.
+- Với cú pháp hải mã (:=) thì ra ngoài vẫn còn.
+
+```python
+symbol = "Hello"
+codes = [ord(s) for s in symbol] # s ra ngoài vòng lặp biến mất
+
+codes = [last := ord(s) for s in symbol] # ra ngoài vòng lặp, last vẫn truy cập được
+print(last) # o
+```
+- listcomps thì dùng để build list, transform item.
+    - filter và map cũng làm điều tương tự, mà hơi khác 1 tí -> xem phần tiếp
+
+#### listcomps vs map vs filter
+- Ví dụ dùng listcomps
+```python
+symbols = "Hello VIET NAM"
+lowers = [ord(s) for s in symbols if ord(s) > 97]
+```
+- Ví dụ dùng map & filter
+
+```python
+symbols = "Hello Viet Nam"
+lowers = list(filter(lambda c: c > 97, map(ord, symbols)))
+```
+- Ban đầu thì tác giả tin rằng: listcomps có vẻ nhanh hơn. Nhưng mà không phải vậy. Có vẻ same same.
+
+```python
+import timeit
+
+TIMES = 10000
+SETUP = """
+symbols = '$¢£¥€¤'
+def non_ascii(c):
+    return c > 127
+"""
+
+def clock(label, cmd):
+    res = timeit.repeat(cmd, setup=SETUP, number=TIMES)
+    print(label, *(f'{x:.3f}' for x in res))
+
