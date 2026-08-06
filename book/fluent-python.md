@@ -356,3 +356,62 @@ def clock(label, cmd):
     res = timeit.repeat(cmd, setup=SETUP, number=TIMES)
     print(label, *(f'{x:.3f}' for x in res))
 
+clock('listcomps            :', '[ord(s) for s in symbols if ord(s) > 127]')
+clock('listcomps + func    :', '[ord(s) for s in symbols if non_ascii(s)]')
+clock('filter + lambda      :', 'list(filter(lambda c: c > 127, map(ord, symbols)))')
+clock('filter + func', 'list(filter(non_ascii, map(ord, symbols)))')
+```
+
+#### Tích đề các (cartasian products)
+- Đại khái giống kiểu build tổ hợp
+```python
+sizes = ['S', 'M', 'L']
+colors = ['red', 'blue', 'green']
+
+tshirts = [
+    (color, size)
+    for color in colors
+    for size in sizes
+]
+```
+#### Generator expression
+- Generator expression đỡ tốn mem hơn, vì không lưu toàn bộ array vào bộ nhớ.
+- Cứ vòng lặp chạy đến đâu thì phần tử mới sinh ra đến đó
+- Nó gần giống listcomps:
+    - Listcomps: dùng ngoặc vuông: `[]`
+    - Genexps: dùng ngoặc tròn: `()`
+- Ví dụ dùng genexps:
+```python
+colors = ['Red', 'Green', 'Blue']
+sizes = ['S', 'M', 'L']
+
+for tshirt in (f'{c} {s}' for color in colors for size in sizes)
+    print(tshirt)
+```
+
+### Tuple không chỉ là một immutable list
+- Tuple có hai cách sử dụng: immutable list và record không có field name
+#### Tuple as a record
+
+```python
+lax_coordinates = (100, 100)
+city, year, pop = ('Ha Noi', 2010, 100)
+traveler_ids = [('VNA', 100), ('USA', 200), ('FRA', 300)]
+
+for passport in traveler_ids:
+    print('%s %s' % passport)
+
+for country, _ in traveler_ids:
+    print(country)
+```
+
+#### Tuple as immutable list
+- Tuple sử dụng ít bộ nhớ hơn list - cùng độ dài
+
+### Unpacking sequences và iterable
+- Unpacking là qua trọng và cần thiết, vì tránh lãng phí các biến không sử dụng.
+- Ngoài sequences ra, Unpacking còn hoạt động với các biến iterable (bình thường iterable không truy cập được qua [] nhé)
+
+// TODO: fill this section
+
+### Pattern matching Sequences trong Intepreter
